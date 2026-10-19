@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
+
+
+
+void kruskalMST(int **cost, int V) {
+
+
+    // 1. Define the Edge structure locally inside the function
+    typedef struct {
+        int u, v, weight;
+    } Edge;
+
+    // 2. Allocate memory for the maximum possible edges in an undirected graph
+    int maxEdges = (V * (V - 1)) / 2;
+    Edge *edges = (Edge *)malloc(maxEdges * sizeof(Edge));
+    int edgeCount = 0;
+
+    // 3. Extract edges from the upper triangular matrix (ensuring u < v)
+    for (int i = 0; i < V; i++) {
+        for (int j = i + 1; j < V; j++) {
+            if (cost[i][j] != 9999) {
+                edges[edgeCount].u = i;
+                edges[edgeCount].v = j;
+                edges[edgeCount].weight = cost[i][j];
+                edgeCount++;
+            }
+        }
+    }
+
+    // 4. Sort the edges manually using Bubble Sort to strictly respect the 
+    // row-wise upper-triangular tie-breaking criteria required by the platform
+    for (int i = 0; i < edgeCount - 1; i++) {
+        for (int j = 0; j < edgeCount - i - 1; j++) {
+            int swapNeeded = 0;
+}
