@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define INF 1e9
+
+// Helper function to find the minimum of two values
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1) return 0;
+
+    // Allocate memory for the cost matrix
+    int **cost = (int **)malloc(n * sizeof(int *));
+    for (int i = 0; i < n; i++) {
+        cost[i] = (int *)malloc(n * sizeof(int));
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &cost[i][j]);
+            // Convert -1 (no direct connection) to INF representation
+            if (cost[i][j] == -1) {
+                cost[i][j] = INF;
+            }
+        }
+    }
+
+    // Number of possible subsets/states is 2^n
+    int num_states = 1 << n;
+
+    // dp[mask][u] stores the minimum cost to visit the subset of cities in 'mask',
+    // ending at city 'u', starting from city 0.
+    int **dp = (int **)malloc(num_states * sizeof(int *));
+    for (int i = 0; i < num_states; i++) {
+        dp[i] = (int *)malloc(n * sizeof(int));
+        for (int j = 0; j < n; j++) {
